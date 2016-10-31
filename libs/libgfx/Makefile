@@ -23,13 +23,12 @@ clean:
 	$(RM) *.o *.a
 	cd $(SDL_DIR); make clean
 
-# Build gfxlayer
+$(SDL_LIB):
+	cd $(SDL_DIR); ./configure; make -j$(nproc)
+
 $(TARGET): $(SDL_LIB) $(OBJS)
 	$(CC) -o $@ $^ $(LFLAGS)
 
 %.o: %.c $(HEAD)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-# Build SDL2
-$(SDL_LIB):
-	cd $(SDL_DIR); ./configure; make -j$(nproc)
