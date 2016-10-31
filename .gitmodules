@@ -5,3 +5,8 @@
 [submodule "libs/LuaJIT"]
 	path = libs/LuaJIT
 	url = https://github.com/LuaJIT/LuaJIT.git
+	ignore = dirty
+[submodule "libs/glad"]
+	path = libs/glad
+	url = https://github.com/Dav1dde/glad.git
+	ignore = dirty

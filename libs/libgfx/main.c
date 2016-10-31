@@ -1,17 +1,15 @@
 #include <stdio.h>
-#include "SDL.h"
 
-void ffi_init();
+#include "gfx_window.h"
 
 int main() {
-	ffi_init();
-}
-
-void ffi_init() {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-		printf("SDL_Init error: %s\n", SDL_GetError());
+	gfx_init();
+	gfx_createWindow(200, 200);
+	gfx_clearColor(0, 0, 0, 1);
+	while(!gfx_closeRequested()) {
+		gfx_clear();
+		gfx_update();
+		gfx_draw();
 	}
-
-	printf("SDL_Init successful!\n");
-	SDL_Quit();
+	gfx_quit();
 }

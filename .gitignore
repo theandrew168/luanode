@@ -1,2 +1,3 @@
 *.o
 *.a
+libs/libgfx/gfx_debug
