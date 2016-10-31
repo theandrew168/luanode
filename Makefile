@@ -1,7 +1,7 @@
 GFX_DIR = libs/libgfx
 GFX_LIB = $(GFX_DIR)/libgfx.a
 
-LUA_DIR = libs/LuaJIT-2.0.4
+LUA_DIR = libs/LuaJIT
 LUA_JIT = $(LUA_DIR)/src/luajit
 
 LUA_MAIN = src/main.lua
