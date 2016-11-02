@@ -27,13 +27,26 @@ typedef uint64_t		GLuint64;
 typedef struct __GLsync	*GLsync;
 
 void glClear(GLbitfield mask);
+void glClearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+const GLubyte* glGetString(GLenum name);
+GLenum glGetError();
+GLuint glCreateProgram();
 
 ]]
 
 local gl = {
 	COLOR_BUFFER_BIT = 0x00004000,
+	VENDOR = 0x1F00,
+	RENDERER = 0x1F01,
+	VERSION = 0x1F02,
+	EXTENSIONS = 0x1F03,
+	SHADING_LANGUAGE_VERSION = 0x8B8C,
 
 	clear = libgles3.glClear,
+	clearColor = libgles3.glClearColor,
+	getString = libgles3.glGetString,
+	getError = libgles3.glGetError,
+	createProgram = libgles3.glCreateProgram,
 }
 
 return gl
