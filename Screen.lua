@@ -21,7 +21,7 @@ function Screen.new(width, height)
 	glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 3)
 	glfw.windowHint(glfw.CONTEXT_VERSION_MINOR, 0)
 
-	screen.window = glfw.createWindow(width, height, "LuaJIT - OpenGL ES 3.0", nil, nil)
+	screen.window = glfw.createWindow(width, height, "LuaJIT - OpenGL ES", nil, nil)
 	if screen.window == 0 then
 		print('Failed to create window!')
 		return {}
@@ -31,10 +31,12 @@ function Screen.new(width, height)
 	glfw.swapInterval(1)
 	gl.clearColor(0.2, 0.4, 0.4, 1.0)
 
+----[[
 	print('Vendor:   ' .. ffi.string(gl.getString(gl.VENDOR)))
 	print('Renderer: ' .. ffi.string(gl.getString(gl.RENDERER)))
 	print('Version:  ' .. ffi.string(gl.getString(gl.VERSION)))
 	print('Shaders:  ' .. ffi.string(gl.getString(gl.SHADING_LANGUAGE_VERSION)))
+--]]
 
 	return screen
 end
