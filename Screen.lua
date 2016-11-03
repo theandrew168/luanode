@@ -1,4 +1,5 @@
-local gl = require('gles3')
+--local gl = require('gles3') -- for GLES 3
+local gl = require('gles2')
 local glfw = require('glfw3')
 local ffi = require('ffi')
 
@@ -12,17 +13,19 @@ function Screen.new(width, height)
 	screen.width = width
 	screen.height = height
 
-	if glfw.init() ~= 1 then
+	if glfw.init() ~= glfw.TRUE then
 		print('Failed to init GLFW!')
 		return {}
 	end
 
 	glfw.windowHint(glfw.CLIENT_API, glfw.OPENGL_ES_API)
-	glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 3)
+	glfw.windowHint(glfw.CONTEXT_CREATION_API, glfw.EGL_CONTEXT_API)
+	--glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 3) -- for GLES 3
+	glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 2)
 	glfw.windowHint(glfw.CONTEXT_VERSION_MINOR, 0)
 
-	screen.window = glfw.createWindow(width, height, "LuaJIT - OpenGL ES", nil, nil)
-	if screen.window == 0 then
+	screen.window = glfw.createWindow(width, height, "LuaJIT - OpenGL ES 2.0", nil, nil)
+	if screen.window == nil then
 		print('Failed to create window!')
 		return {}
 	end
