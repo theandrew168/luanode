@@ -15,7 +15,7 @@ function Screen.new(width, height)
 
 	if glfw.init() ~= glfw.TRUE then
 		print('Failed to init GLFW!')
-		return {}
+		os.exit()
 	end
 
 	glfw.windowHint(glfw.CLIENT_API, glfw.OPENGL_ES_API)
@@ -27,7 +27,7 @@ function Screen.new(width, height)
 	screen.window = glfw.createWindow(width, height, "LuaJIT - OpenGL ES 2.0", nil, nil)
 	if screen.window == nil then
 		print('Failed to create window!')
-		return {}
+		os.exit()
 	end
 
 	glfw.makeContextCurrent(screen.window)
