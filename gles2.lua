@@ -9,26 +9,26 @@ https://www.khronos.org/registry/gles/api/GLES2/gl2.h
 ffi.cdef[[
 
 // GLES 2.0 types
-typedef int8_t			GLbyte;
-typedef float			GLclampf;
-typedef int32_t			GLfixed;
-typedef short			GLshort;
-typedef unsigned short	GLushort;
-typedef void			GLvoid;
-typedef struct __GLsync	*GLsync;
-typedef int64_t			GLint64;
-typedef uint64_t		GLuint64;
-typedef unsigned int	GLenum;
-typedef unsigned int	GLuint;
-typedef char			GLchar;
-typedef float			GLfloat;
-typedef long int		GLsizeiptr;
-typedef long int		GLintptr;
-typedef unsigned int 	GLbitfield;
-typedef int				GLint;
-typedef unsigned char	GLboolean;
-typedef int				GLsizei;
-typedef uint8_t			GLubyte;
+typedef int8_t          GLbyte;
+typedef float           GLclampf;
+typedef int32_t         GLfixed;
+typedef short           GLshort;
+typedef unsigned short  GLushort;
+typedef void            GLvoid;
+typedef struct __GLsync *GLsync;
+typedef int64_t         GLint64;
+typedef uint64_t        GLuint64;
+typedef unsigned int    GLenum;
+typedef unsigned int    GLuint;
+typedef char            GLchar;
+typedef float           GLfloat;
+typedef long int        GLsizeiptr;
+typedef long int        GLintptr;
+typedef unsigned int    GLbitfield;
+typedef int             GLint;
+typedef unsigned char   GLboolean;
+typedef int             GLsizei;
+typedef uint8_t         GLubyte;
 
 // GLES 2.0 functions
 void glActiveTexture (GLenum texture);
