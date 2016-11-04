@@ -32,14 +32,6 @@ function Screen.new(width, height)
 
 	glfw.makeContextCurrent(screen.window)
 	glfw.swapInterval(1)
-	gl.clearColor(0.2, 0.4, 0.4, 1.0)
-
-----[[
-	print('Vendor:   ' .. ffi.string(gl.getString(gl.VENDOR)))
-	print('Renderer: ' .. ffi.string(gl.getString(gl.RENDERER)))
-	print('Version:  ' .. ffi.string(gl.getString(gl.VERSION)))
-	print('Shaders:  ' .. ffi.string(gl.getString(gl.SHADING_LANGUAGE_VERSION)))
---]]
 
 	return screen
 end
@@ -62,6 +54,17 @@ end
 
 function Screen:draw()
 	glfw.swapBuffers(self.window)
+end
+
+function Screen:clearColor(r, g, b)
+	gl.clearColor(r, g, b, 1.0)
+end
+
+function Screen:printSpecs()
+	print('Vendor:   ' .. ffi.string(gl.getString(gl.VENDOR)))
+	print('Renderer: ' .. ffi.string(gl.getString(gl.RENDERER)))
+	print('Version:  ' .. ffi.string(gl.getString(gl.VERSION)))
+	print('Shaders:  ' .. ffi.string(gl.getString(gl.SHADING_LANGUAGE_VERSION)))
 end
 
 return Screen
