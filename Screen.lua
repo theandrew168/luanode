@@ -1,4 +1,3 @@
---local gl = require('gles3') -- for GLES 3
 local gl = require('gles2')
 local glfw = require('glfw3')
 local ffi = require('ffi')
@@ -13,6 +12,11 @@ function Screen.new(width, height)
 	screen.width = width
 	screen.height = height
 
+	-- init input fields
+	screen.INPUT = glfw.INPUT_CONSTANTS
+	screen.mouse_xpos = ffi.typeof("double[1]")()
+	screen.mouse_ypos = ffi.typeof("double[1]")()
+
 	if glfw.init() ~= glfw.TRUE then
 		print('Failed to init GLFW!')
 		os.exit()
@@ -20,7 +24,6 @@ function Screen.new(width, height)
 
 	glfw.windowHint(glfw.CLIENT_API, glfw.OPENGL_ES_API)
 	glfw.windowHint(glfw.CONTEXT_CREATION_API, glfw.EGL_CONTEXT_API)
-	--glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 3) -- for GLES 3
 	glfw.windowHint(glfw.CONTEXT_VERSION_MAJOR, 2)
 	glfw.windowHint(glfw.CONTEXT_VERSION_MINOR, 0)
 
@@ -58,6 +61,19 @@ end
 
 function Screen:clearColor(r, g, b)
 	gl.clearColor(r, g, b, 1.0)
+end
+
+function Screen:getCursorPos()
+	glfw.getCursorPos(self.window, self.mouse_xpos, self.mouse_ypos)
+	return self.mouse_xpos[0], self.mouse_ypos[0]
+end
+
+function Screen:isMouseButtonPressed(button)
+	return glfw.getMouseButton(self.window, button) == glfw.PRESS
+end
+
+function Screen:isKeyPressed(key)
+	return glfw.getKey(self.window, key) == glfw.PRESS
 end
 
 function Screen:printSpecs()

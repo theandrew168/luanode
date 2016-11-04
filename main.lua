@@ -10,6 +10,8 @@ while screen:shouldClose() == 0 do
 	screen:clear()
 	screen:update()
 	screen:draw()
+	print('Space:      ' .. tostring(screen:isKeyPressed(screen.INPUT.KEY_SPACE)))
+	print('Left Mouse: ' .. tostring(screen:isMouseButtonPressed(screen.INPUT.MOUSE_BUTTON_LEFT)))
 end
 
 screen:destroy()
