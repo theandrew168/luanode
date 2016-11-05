@@ -12,9 +12,9 @@ debug_triangle.vertices = {
 debug_triangle.cvertices = ffi.new("float[9]", debug_triangle.vertices)
 
 function debug_triangle.draw()
-	gl.vertexAttribPointer(0, 3, gl.FLOAT, gl.FALSE, 0, debug_triangle.cvertices)
-	gl.enableVertexAttribArray(0)
-	gl.drawArrays(gl.TRIANGLES, 0, 3)
+	gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, debug_triangle.cvertices)
+	gl.glEnableVertexAttribArray(0)
+	gl.glDrawArrays(gl.GL_TRIANGLES, 0, 3)
 end
 
 return debug_triangle

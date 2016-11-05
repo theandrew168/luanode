@@ -14,8 +14,8 @@ while screen:shouldClose() == 0 do
 	tri.draw()
 
 	screen:draw()
-	print('Space:      ' .. tostring(screen:isKeyPressed(screen.INPUT.KEY_SPACE)))
-	print('Left Mouse: ' .. tostring(screen:isMouseButtonPressed(screen.INPUT.MOUSE_BUTTON_LEFT)))
+	print('Space:      ' .. tostring(screen:isKeyPressed(screen.INPUT.GLFW_KEY_SPACE)))
+	print('Left Mouse: ' .. tostring(screen:isMouseButtonPressed(screen.INPUT.GLFW_MOUSE_BUTTON_LEFT)))
 end
 
 screen:destroy()
