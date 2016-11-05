@@ -31,9 +31,7 @@ function debug_triangle.draw()
 	debug_triangle.shader:start()
 
 	gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, debug_triangle.cvertices)
-	gl.glEnableVertexAttribArray(0)
 	gl.glVertexAttribPointer(1, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, debug_triangle.ccolors)
-	gl.glEnableVertexAttribArray(1)
 	gl.glDrawArrays(gl.GL_TRIANGLES, 0, 3)
 
 	debug_triangle.shader:stop()

@@ -4,10 +4,6 @@ local gl = require('gles2')
 local ShaderProgram = {}
 ShaderProgram.__index = ShaderProgram
 
-ShaderProgram.ATTRIB_POSITION = 0
-ShaderProgram.ATTRIB_TCOORDS  = 1
-ShaderProgram.ATTRIB_NORMALS  = 2
-
 function ShaderProgram.new(vertSource, fragSource, attributes)
 	local program = {}
 	setmetatable(program, ShaderProgram)
@@ -19,6 +15,7 @@ function ShaderProgram.new(vertSource, fragSource, attributes)
 	gl.glAttachShader(program.programID, program.vertID)
 	gl.glAttachShader(program.programID, program.fragID)
 
+	program.attributes = attributes
 	for k, v in pairs(attributes) do
 		gl.glBindAttribLocation(program.programID, v, k)
 	end
@@ -74,9 +71,15 @@ end
 
 function ShaderProgram:start()
 	gl.glUseProgram(self.programID)
+	for k, v in pairs(self.attributes) do
+		gl.glEnableVertexAttribArray(v)
+	end
 end
 
 function ShaderProgram:stop()
+	for k, v in pairs(self.attributes) do
+		gl.glDisableVertexAttribArray(v)
+	end
 	gl.glUseProgram(0)
 end
 
