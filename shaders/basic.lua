@@ -5,15 +5,15 @@ source = [[
 attribute vec4 aPosition;
 attribute vec4 aColor;
 
-uniform vec4 uMVPMatrix;
+uniform float uAlpha;
 
 varying vec4 vColor;
-varying vec4 vMVP;
+varying float vAlpha;
 
 void main() {
 	gl_Position = aPosition;
 	vColor = aColor;
-	vMVP = uMVPMatrix;
+	vAlpha = uAlpha;
 }
 ]],
 
@@ -23,7 +23,7 @@ attributes = {
 },
 
 uniforms = {
-	'uMVPMatrix',
+	'uAlpha',
 },
 }
 
@@ -34,10 +34,10 @@ source = [[
 precision mediump float;
 
 varying vec4 vColor;
-varying vec4 vMVP;
+varying float vAlpha;
 
 void main() {
-	gl_FragColor = vColor;
+	gl_FragColor = vColor * vAlpha;
 }
 ]],
 }

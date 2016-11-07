@@ -29,6 +29,7 @@ end
 
 function debug_triangle.draw()
 	debug_triangle.shader:start()
+	debug_triangle.shader:setUniformFloat('uAlpha', 0.5)
 
 	gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, debug_triangle.cvertices)
 	gl.glVertexAttribPointer(1, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, debug_triangle.ccolors)

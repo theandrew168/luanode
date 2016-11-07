@@ -47,9 +47,10 @@ function ShaderProgram.new(filename)
 	gl.glLinkProgram(program.programID)
 	gl.glValidateProgram(program.programID)
 
+	-- Cache uniform locations
+	program.uniforms = {}
 	for i = 1, #uniforms do
-		print(uniforms[i])
-		print('GL: ' .. gl.glGetUniformLocation(program.programID, uniforms[i]))
+		program.uniforms[uniforms[i]] = gl.glGetUniformLocation(program.programID, uniforms[i])
 	end
 
 	return program
@@ -75,7 +76,14 @@ function ShaderProgram.compileShader(shaderSource, shaderType)
 		gl.glGetShaderiv(shaderID, gl.GL_INFO_LOG_LENGTH, cErrLen)
 		gl.glGetShaderInfoLog(shaderID, cErrLen[0], nil, cLog);
 
-		print('compileShader: \n' .. ffi.string(cLog))
+		if shaderType == gl.GL_VERTEX_SHADER then
+			print('compileShader(vertex): \n' .. ffi.string(cLog))
+		elseif shaderType == gl.GL_FRAGMENT_SHADER then
+			print('compileShader(fragment): \n' .. ffi.string(cLog))
+		else
+			print('compileShader: \n' .. ffi.string(cLog))
+		end
+
 	end
 
 	return shaderID
@@ -102,6 +110,28 @@ function ShaderProgram:destroy()
 	gl.glDeleteShader(self.vertID)
 	gl.glDeleteShader(self.fragID)
 	gl.glDeleteProgram(self.programID)
+end
+
+function ShaderProgram:setUniformBoolean(name, value)
+	self:setUniformFloat(name, value and 1.0 or 0.0)
+end
+
+function ShaderProgram:setUniformInt(name, value)
+	gl.glUniform1i(self.uniforms[name], value)
+end
+
+function ShaderProgram:setUniformFloat(name, value)
+	gl.glUniform1f(self.uniforms[name], value)
+end
+
+-- TODO: Vector data structure
+function ShaderProgram:setUniformVector(name, value)
+	gl.glUniform3f(self.uniforms[name], value.x, value.y, value.z)
+end
+
+-- TODO: Matrix data structure
+function ShaderProgram:setUniformMatrix(name, value)
+	gl.glUniformMatrix4fv(self.uniforms[name], 1, false, value.buffer)
 end
 
 return ShaderProgram
