@@ -30,12 +30,12 @@ function ShaderProgram.newFromFile(filename)
 	local vertSource, fragSource = nil, nil
 	local attributes = nil
 
-	function vert(vertData)
+	function vertex(vertData)
 		vertSource = vertData.source
 		attributes = vertData.attributes
 	end
 
-	function frag(fragData)
+	function fragment(fragData)
 		fragSource = fragData.source
 	end
 

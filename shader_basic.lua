@@ -1,4 +1,4 @@
-vert {
+vertex {
 source = [[
 #version 100
 
@@ -18,7 +18,7 @@ attributes = {
 }
 }
 
-frag {
+fragment {
 source = [[
 #version 100
 
