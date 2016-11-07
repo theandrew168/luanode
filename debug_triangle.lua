@@ -20,7 +20,7 @@ function debug_triangle.init()
 	debug_triangle.cvertices = ffi.new("float[9]", debug_triangle.vertices)
 	debug_triangle.ccolors = ffi.new("float[9]", debug_triangle.colors)
 	
-	debug_triangle.shader = Shader.newFromFile('shader_basic')
+	debug_triangle.shader = Shader.new('basic')
 end
 
 function debug_triangle.destroy()

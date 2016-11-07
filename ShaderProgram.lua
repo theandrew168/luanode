@@ -1,12 +1,35 @@
 local ffi = require('ffi')
 local gl = require('gles2')
 
+local SHADER_DIR = 'shaders/'
+
 local ShaderProgram = {}
 ShaderProgram.__index = ShaderProgram
 
-function ShaderProgram.new(vertSource, fragSource, attributes)
+--- Create new ShaderProgram from shader file.
+-- @param filename Name of shader file
+-- @return ShaderProgram object
+function ShaderProgram.new(filename)
 	local program = {}
 	setmetatable(program, ShaderProgram)
+
+	-- Local cache for shader callbacks
+	local vertSource, fragSource = nil, nil
+	local attributes, uniforms = nil, nil
+
+	-- Vertex shader callback
+	function vertex(vertData)
+		vertSource = vertData.source
+		attributes = vertData.attributes or {}
+		uniforms = vertData.uniforms or {}
+	end
+
+	-- Fragment shader callback
+	function fragment(fragData)
+		fragSource = fragData.source
+	end
+
+	dofile(SHADER_DIR .. filename .. '.lua')
 
 	program.vertID = program.compileShader(vertSource, gl.GL_VERTEX_SHADER)
 	program.fragID = program.compileShader(fragSource, gl.GL_FRAGMENT_SHADER)
@@ -15,6 +38,7 @@ function ShaderProgram.new(vertSource, fragSource, attributes)
 	gl.glAttachShader(program.programID, program.vertID)
 	gl.glAttachShader(program.programID, program.fragID)
 
+	-- Bind attribute locations based on shader file
 	program.attributes = attributes
 	for k, v in pairs(attributes) do
 		gl.glBindAttribLocation(program.programID, v, k)
@@ -23,24 +47,12 @@ function ShaderProgram.new(vertSource, fragSource, attributes)
 	gl.glLinkProgram(program.programID)
 	gl.glValidateProgram(program.programID)
 
+	for i = 1, #uniforms do
+		print(uniforms[i])
+		print('GL: ' .. gl.glGetUniformLocation(program.programID, uniforms[i]))
+	end
+
 	return program
-end
-
-function ShaderProgram.newFromFile(filename)
-	local vertSource, fragSource = nil, nil
-	local attributes = nil
-
-	function vertex(vertData)
-		vertSource = vertData.source
-		attributes = vertData.attributes
-	end
-
-	function fragment(fragData)
-		fragSource = fragData.source
-	end
-
-	dofile(filename .. '.lua')
-	return ShaderProgram.new(vertSource, fragSource, attributes)
 end
 
 function ShaderProgram.compileShader(shaderSource, shaderType)
@@ -71,19 +83,20 @@ end
 
 function ShaderProgram:start()
 	gl.glUseProgram(self.programID)
-	for k, v in pairs(self.attributes) do
+	for _, v in pairs(self.attributes) do
 		gl.glEnableVertexAttribArray(v)
 	end
 end
 
 function ShaderProgram:stop()
-	for k, v in pairs(self.attributes) do
+	for _, v in pairs(self.attributes) do
 		gl.glDisableVertexAttribArray(v)
 	end
 	gl.glUseProgram(0)
 end
 
 function ShaderProgram:destroy()
+	self:stop()
 	gl.glDetachShader(self.programID, self.vertID)
 	gl.glDetachShader(self.programID, self.fragID)
 	gl.glDeleteShader(self.vertID)
