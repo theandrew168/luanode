@@ -1,23 +1,35 @@
 package.path = package.path .. ';./bindings/?.lua'
 
 local Window = require('Window')
-local tri = require('debug_triangle')
+local Model = require('Model')
+local Shader = require('ShaderProgram')
+local VALS = require('values')
 
 local window = Window.new(960, 640)
 window:printSpecs()
 window:clearColor(0.2, 0.2, 0.2)
-tri.init()
+
+local tri = Model.new()
+tri:addBuffer(0, 3, VALS.triangle.vertices)
+tri:addBuffer(1, 3, VALS.triangle.colors)
+
+local basic = Shader.new('basic')
 
 while window:shouldClose() == 0 do
 	window:clear()
 	window:update()
 
-	tri.draw()
+	basic:start()
+	basic:setUniformFloat('uAlpha', 0.8)
+
+	tri:bind()
+	tri:draw()
+	tri:unbind()
+
+	basic:stop()
 
 	window:draw()
---	print('Space:      ' .. tostring(window:isKeyPressed(window.INPUT.GLFW_KEY_SPACE)))
---	print('Left Mouse: ' .. tostring(window:isMouseButtonPressed(window.INPUT.GLFW_MOUSE_BUTTON_LEFT)))
 end
 
-tri.destroy()
+basic:destroy()
 window:destroy()
