@@ -4,8 +4,9 @@ package.path = package.path .. ';./src/resources/?.lua'
 
 local Window = require('Window')
 local Model = require('Model')
-local Shader = require('Shader')
 local Manager = require('ResourceManager')
+local Renderable = require('Renderable')
+local Render = require('BasicRenderer')
 local VALS = require('values')
 
 local window = Window.new(960, 640)
@@ -16,20 +17,17 @@ local tri = Model.new()
 tri:addBuffer(0, 3, VALS.triangle.vertices)
 tri:addBuffer(1, 3, VALS.triangle.colors)
 
-local shader_basic = Manager.get('shader/basic')
+local triangle = Renderable.new()
+triangle:setShader(Manager.get('shader/basic'))
+triangle:setShader(Manager.get('shader/basic'))
+triangle:setModel(tri)
+triangle:setUniform('uAlpha', 'float', 0.8)
 
 while window:shouldClose() == 0 do
 	window:clear()
 	window:update()
 
-	shader_basic:start()
-	shader_basic:setUniformFloat('uAlpha', 0.8)
-
-	tri:bind()
-	tri:draw()
-	tri:unbind()
-
-	shader_basic:stop()
+	Render.draw(triangle)
 
 	window:draw()
 end

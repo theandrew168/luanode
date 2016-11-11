@@ -37,7 +37,8 @@ function Renderable:setMaterial(material)
 	self.material = material
 end
 
-function Renderable:addUniform(uniformName, uniformType, value)
+function Renderable:setUniform(uniformName, uniformType, value)
+	self.uniforms[uniformName] = {}
 	self.uniforms[uniformName].uniformType = uniformType
 	self.uniforms[uniformName].value = value
 end
@@ -49,3 +50,5 @@ end
 function Renderable:getUniforms()
 	return self.uniforms
 end
+
+return Renderable

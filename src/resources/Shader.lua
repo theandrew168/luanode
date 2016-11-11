@@ -119,41 +119,22 @@ function Shader:destroy()
 	gl.glDeleteProgram(self.id)
 end
 
---- Set uniform boolean.
--- @param name Name of uniform in shader (must be exact)
+--- Set uniform value
+-- @param uniformName Name of uniform in shader (must be exact)
+-- @param uniformType Type of uniform in shader
 -- @param value Value to be assigned to uniform
-function Shader:setUniformBoolean(name, value)
-	self:setUniformFloat(name, value and 1.0 or 0.0)
-end
-
---- Set uniform integer.
--- @param name Name of uniform in shader (must be exact)
--- @param value Value to be assigned to uniform
-function Shader:setUniformInt(name, value)
-	gl.glUniform1i(self.uniforms[name], value)
-end
-
---- Set uniform float.
--- @param name Name of uniform in shader (must be exact)
--- @param value Value to be assigned to uniform
-function Shader:setUniformFloat(name, value)
-	gl.glUniform1f(self.uniforms[name], value)
-end
-
--- TODO: Vector data structure
---- Set uniform vector3f.
--- @param name Name of uniform in shader (must be exact)
--- @param value Value to be assigned to uniform
-function Shader:setUniformVector(name, value)
-	gl.glUniform3f(self.uniforms[name], value.x, value.y, value.z)
-end
-
--- TODO: Matrix data structure
---- Set uniform matrix4fv.
--- @param name Name of uniform in shader (must be exact)
--- @param value Value to be assigned to uniform
-function Shader:setUniformMatrix(name, value)
-	gl.glUniformMatrix4fv(self.uniforms[name], 1, false, value.buffer)
+function Shader:setUniform(uniformName, uniformType, value)
+	if uniformType == 'bool' then
+		gl.glUniform1f(self.uniforms[uniformName], value and 1.0 or 0.0)
+	elseif uniformType == 'int' then
+		gl.glUniform1i(self.uniforms[uniformName], value)
+	elseif uniformType == 'float' then
+		gl.glUniform1f(self.uniforms[uniformName], value)
+	elseif uniformType == 'vector' then
+		print('setUniform: TODO vector')
+	elseif uniformType == 'matrix' then
+		print('setUniform: TODO matrix')
+	end
 end
 
 return Shader
