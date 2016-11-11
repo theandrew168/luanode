@@ -31,6 +31,7 @@ function Window.new(width, height)
 	glfw.glfwWindowHint(glfw.GLFW_CONTEXT_CREATION_API, glfw.GLFW_EGL_CONTEXT_API)
 	glfw.glfwWindowHint(glfw.GLFW_CONTEXT_VERSION_MAJOR, 2)
 	glfw.glfwWindowHint(glfw.GLFW_CONTEXT_VERSION_MINOR, 0)
+--	glfw.glfwWindowHint(glfw.GLFW_VISIBLE, glfw.GLFW_FALSE)
 
 	window.id = glfw.glfwCreateWindow(width, height, "LuaJIT - OpenGL ES 2.0", nil, nil)
 	if window.id == nil then
@@ -68,6 +69,22 @@ end
 --- Swap window buffers
 function Window:draw()
 	glfw.glfwSwapBuffers(self.id)
+end
+
+--- Show window
+function Window:show()
+	glfw.glfwShowWindow(self.id)
+end
+
+--- Hide window
+function Window:hide()
+	glfw.glfwHideWindow(self.id)
+end
+
+--- Check window visibility
+-- @return True if visible, false otherwise
+function Window:isVisible()
+	return glfw.glfwGetWindowAttrib(self.id, glfw.GLFW_VISIBLE) == 1 and true or false
 end
 
 --- Set window clear color

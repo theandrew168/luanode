@@ -4,13 +4,17 @@ local gl = require('gles2')
 local Model = {}
 Model.__index = Model
 
-function Model.new()
+function Model.new(filename)
 	local model = {}
 	setmetatable(model, Model)
 
 	model.buffers = {}
 
 	return model
+end
+
+function Model:destroy()
+	print('Model: destroy()')
 end
 
 -- gen

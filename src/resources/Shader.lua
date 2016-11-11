@@ -3,15 +3,15 @@ local gl = require('gles2')
 
 local SHADER_DIR = 'res/shaders/'
 
-local ShaderProgram = {}
-ShaderProgram.__index = ShaderProgram
+local Shader = {}
+Shader.__index = Shader
 
---- Create new ShaderProgram from shader file.
+--- Create new Shader from shader file.
 -- @param filename Name of shader file
--- @return ShaderProgram object
-function ShaderProgram.new(filename)
-	local program = {}
-	setmetatable(program, ShaderProgram)
+-- @return Shader object
+function Shader.new(filename)
+	local shader = {}
+	setmetatable(shader, Shader)
 
 	-- Local cache for shader callbacks
 	local vertSource, fragSource = nil, nil
@@ -31,36 +31,36 @@ function ShaderProgram.new(filename)
 
 	dofile(SHADER_DIR .. filename .. '.lua')
 
-	program.vertID = program.compileShader(vertSource, gl.GL_VERTEX_SHADER)
-	program.fragID = program.compileShader(fragSource, gl.GL_FRAGMENT_SHADER)
-	program.programID = gl.glCreateProgram()
+	shader.vertID = shader.compileShader(vertSource, gl.GL_VERTEX_SHADER)
+	shader.fragID = shader.compileShader(fragSource, gl.GL_FRAGMENT_SHADER)
+	shader.id = gl.glCreateProgram()
 
-	gl.glAttachShader(program.programID, program.vertID)
-	gl.glAttachShader(program.programID, program.fragID)
+	gl.glAttachShader(shader.id, shader.vertID)
+	gl.glAttachShader(shader.id, shader.fragID)
 
 	-- Bind attribute locations based on shader file
-	program.attributes = attributes
+	shader.attributes = attributes
 	for k, v in pairs(attributes) do
-		gl.glBindAttribLocation(program.programID, v, k)
+		gl.glBindAttribLocation(shader.id, v, k)
 	end
 
-	gl.glLinkProgram(program.programID)
-	gl.glValidateProgram(program.programID)
+	gl.glLinkProgram(shader.id)
+	gl.glValidateProgram(shader.id)
 
 	-- Cache uniform locations
-	program.uniforms = {}
+	shader.uniforms = {}
 	for i = 1, #uniforms do
-		program.uniforms[uniforms[i]] = gl.glGetUniformLocation(program.programID, uniforms[i])
+		shader.uniforms[uniforms[i]] = gl.glGetUniformLocation(shader.id, uniforms[i])
 	end
 
-	return program
+	return shader
 end
 
 --- Compile shaders from source.
 -- @param shaderSource Shader source code as a string
 -- @param shaderType Type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
 -- @return ID of compiled shader
-function ShaderProgram.compileShader(shaderSource, shaderType)
+function Shader.compileShader(shaderSource, shaderType)
 	local cSource = ffi.new('const char *[1]')
 	cSource[0] = shaderSource
 
@@ -94,15 +94,15 @@ function ShaderProgram.compileShader(shaderSource, shaderType)
 end
 
 --- Start using this shader program and enable attrib arrays.
-function ShaderProgram:start()
-	gl.glUseProgram(self.programID)
+function Shader:start()
+	gl.glUseProgram(self.id)
 	for _, v in pairs(self.attributes) do
 		gl.glEnableVertexAttribArray(v)
 	end
 end
 
 --- Stop using this shader program and disable attrib arrays.
-function ShaderProgram:stop()
+function Shader:stop()
 	for _, v in pairs(self.attributes) do
 		gl.glDisableVertexAttribArray(v)
 	end
@@ -110,33 +110,33 @@ function ShaderProgram:stop()
 end
 
 --- Delete this shader and free its resources
-function ShaderProgram:destroy()
+function Shader:destroy()
 	self:stop()
-	gl.glDetachShader(self.programID, self.vertID)
-	gl.glDetachShader(self.programID, self.fragID)
+	gl.glDetachShader(self.id, self.vertID)
+	gl.glDetachShader(self.id, self.fragID)
 	gl.glDeleteShader(self.vertID)
 	gl.glDeleteShader(self.fragID)
-	gl.glDeleteProgram(self.programID)
+	gl.glDeleteProgram(self.id)
 end
 
 --- Set uniform boolean.
 -- @param name Name of uniform in shader (must be exact)
 -- @param value Value to be assigned to uniform
-function ShaderProgram:setUniformBoolean(name, value)
+function Shader:setUniformBoolean(name, value)
 	self:setUniformFloat(name, value and 1.0 or 0.0)
 end
 
 --- Set uniform integer.
 -- @param name Name of uniform in shader (must be exact)
 -- @param value Value to be assigned to uniform
-function ShaderProgram:setUniformInt(name, value)
+function Shader:setUniformInt(name, value)
 	gl.glUniform1i(self.uniforms[name], value)
 end
 
 --- Set uniform float.
 -- @param name Name of uniform in shader (must be exact)
 -- @param value Value to be assigned to uniform
-function ShaderProgram:setUniformFloat(name, value)
+function Shader:setUniformFloat(name, value)
 	gl.glUniform1f(self.uniforms[name], value)
 end
 
@@ -144,7 +144,7 @@ end
 --- Set uniform vector3f.
 -- @param name Name of uniform in shader (must be exact)
 -- @param value Value to be assigned to uniform
-function ShaderProgram:setUniformVector(name, value)
+function Shader:setUniformVector(name, value)
 	gl.glUniform3f(self.uniforms[name], value.x, value.y, value.z)
 end
 
@@ -152,8 +152,8 @@ end
 --- Set uniform matrix4fv.
 -- @param name Name of uniform in shader (must be exact)
 -- @param value Value to be assigned to uniform
-function ShaderProgram:setUniformMatrix(name, value)
+function Shader:setUniformMatrix(name, value)
 	gl.glUniformMatrix4fv(self.uniforms[name], 1, false, value.buffer)
 end
 
-return ShaderProgram
+return Shader
