@@ -20,7 +20,7 @@ while window:shouldClose() == 0 do
 	window:update()
 
 	basic:start()
-	basic:setUniformFloat('uAlpha', 0.8)
+	basic:setUniformFloat('uAlpha', 0.5)
 
 	tri:bind()
 	tri:draw()

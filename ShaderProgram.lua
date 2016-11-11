@@ -1,7 +1,7 @@
 local ffi = require('ffi')
 local gl = require('gles2')
 
-local SHADER_DIR = 'shaders/'
+local SHADER_DIR = 'res/shaders/'
 
 local ShaderProgram = {}
 ShaderProgram.__index = ShaderProgram

@@ -9,7 +9,7 @@ Values.triangle.vertices = {
 Values.triangle.colors = {
 	1.0, 0.0, 0.0,
 	0.0, 1.0, 0.0,
-	0.0, 0.0, 1.0,
+	0.0, 0.0, 0.7,
 }
 
 
