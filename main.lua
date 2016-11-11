@@ -19,17 +19,25 @@ tri:addBuffer(1, 3, VALS.triangle.colors)
 
 local triangle = Renderable.new()
 triangle:setShader(Manager.get('shader/basic'))
-triangle:setShader(Manager.get('shader/basic'))
 triangle:setModel(tri)
-triangle:setUniform('uAlpha', 'float', 0.8)
+local alpha = 0.2
+local diff = 0.001
 
 while window:shouldClose() == 0 do
 	window:clear()
 	window:update()
 
+	triangle:setUniform('uAlpha', 'float', alpha)
 	Render.draw(triangle)
 
 	window:draw()
+
+	alpha = alpha + diff
+	if alpha > 10 then
+		diff = -0.001
+	elseif alpha < 0 then
+		diff = 0.001
+	end
 end
 
 Manager.unload('shader/basic')
