@@ -37,13 +37,8 @@ function Renderable:setMaterial(material)
 	self.material = material
 end
 
-function Renderable:setUniform(uniformName, uniformType, value)
-	if self.uniforms[uniformName] == nil then
-		self.uniforms[uniformName] = {}
-	end
-
-	self.uniforms[uniformName].uniformType = uniformType
-	self.uniforms[uniformName].value = value
+function Renderable:setUniform(uniformName, value)
+	self.uniforms[uniformName] = value
 end
 
 function Renderable:resetUniforms()

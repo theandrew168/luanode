@@ -49,8 +49,13 @@ function Shader.new(filename)
 
 	-- Cache uniform locations
 	shader.uniforms = {}
-	for i = 1, #uniforms do
-		shader.uniforms[uniforms[i]] = gl.glGetUniformLocation(shader.id, uniforms[i])
+	for k, v in pairs(uniforms) do
+		if shader.uniforms[k] == nil then
+			shader.uniforms[k] = {}
+		end
+
+		shader.uniforms[k].dataType = v
+		shader.uniforms[k].location = gl.glGetUniformLocation(shader.id, k)
 	end
 
 	return shader
@@ -123,16 +128,17 @@ end
 -- @param uniformName Name of uniform in shader (must be exact)
 -- @param uniformType Type of uniform in shader
 -- @param value Value to be assigned to uniform
-function Shader:setUniform(uniformName, uniformType, value)
-	if uniformType == 'bool' then
-		gl.glUniform1f(self.uniforms[uniformName], value and 1.0 or 0.0)
-	elseif uniformType == 'int' then
-		gl.glUniform1i(self.uniforms[uniformName], value)
-	elseif uniformType == 'float' then
-		gl.glUniform1f(self.uniforms[uniformName], value)
-	elseif uniformType == 'vector' then
+function Shader:setUniform(uniformName, value)
+	local uniform = self.uniforms[uniformName]
+	if uniform.dataType == 'bool' then
+		gl.glUniform1f(uniform.location, value and 1.0 or 0.0)
+	elseif uniform.dataType == 'int' then
+		gl.glUniform1i(uniform.location, value)
+	elseif uniform.dataType == 'float' then
+		gl.glUniform1f(uniform.location, value)
+	elseif uniform.dataType == 'vector' then
 		print('setUniform: TODO vector')
-	elseif uniformType == 'matrix' then
+	elseif uniform.dataType == 'matrix' then
 		print('setUniform: TODO matrix')
 	end
 end

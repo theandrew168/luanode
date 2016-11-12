@@ -23,7 +23,7 @@ attributes = {
 },
 
 uniforms = {
-	'uAlpha',
+	uAlpha = 'float',
 },
 }
 

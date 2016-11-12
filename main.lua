@@ -27,7 +27,7 @@ while window:shouldClose() == 0 do
 	window:clear()
 	window:update()
 
-	triangle:setUniform('uAlpha', 'float', alpha)
+	triangle:setUniform('uAlpha', alpha)
 	Render.draw(triangle)
 
 	window:draw()

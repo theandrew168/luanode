@@ -15,7 +15,7 @@ local BasicRenderer = {}
 function BasicRenderer.draw(renderable)
 	renderable:getShader():start()
 	for k, v in pairs(renderable:getUniforms()) do
-		renderable:getShader():setUniform(k, v.uniformType, v.value)
+		renderable:getShader():setUniform(k, v)
 	end
 
 	renderable:getModel():bind()
