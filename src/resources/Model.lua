@@ -9,6 +9,22 @@ function Model.new(filename)
 	setmetatable(model, Model)
 
 	model.buffers = {}
+	model.data = {}
+	model.data.position = {
+		0.0,  0.5, 0.0,
+		-0.5, -0.5, 0.0,
+		0.5, -0.5, 0.0,
+	}
+	model.data.color = {
+		1.0, 0.0, 0.0,
+		0.0, 1.0, 0.0,
+		0.0, 0.0, 1.0,
+	}
+	model.data.normal = {}
+	model.data.uv = {}
+	model.data.binormal = {}
+	model.data.tangent = {}
+	model.indices = {}
 
 	return model
 end
@@ -21,22 +37,26 @@ end
 -- bind
 -- buffer
 -- unbind
-function Model:addBuffer(location, width, data)
+function Model:addBuffer(location, bufferID, width, data)
 	local buffer = {}
 
-	local cBufferID = ffi.new('int[1]')
-	gl.glGenBuffers(1, cBufferID)
+--	local cBufferID = ffi.new('int[1]')
+--	gl.glGenBuffers(1, cBufferID)
 
 	-- Cache buffer details
-	buffer.id = cBufferID[0]
-	buffer.location = location
-	buffer.width = width
-	buffer.data = ffi.new('float[' .. #data .. ']', data)
-	table.insert(self.buffers, buffer)
+	if self.buffers[location] == nil then
+		print('creating buffer...')
+		buffer.id = bufferID
+		buffer.location = location
+		buffer.width = width
+		buffer.data = ffi.new('float[' .. #data .. ']', data)
+		self.buffers[location] = buffer
+--		table.insert(self.buffers, buffer)
+	end
 
 	-- Add data to buffer
-	gl.glBindBuffer(gl.GL_ARRAY_BUFFER, buffer.id)
-	gl.glBufferData(gl.GL_ARRAY_BUFFER, #data * 4, buffer.data, gl.GL_STATIC_DRAW)
+	gl.glBindBuffer(gl.GL_ARRAY_BUFFER, bufferID)
+	gl.glBufferData(gl.GL_ARRAY_BUFFER, #data * 4, self.buffers[location].data, gl.GL_STATIC_DRAW)
 	gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
 end
 
@@ -50,18 +70,15 @@ end
 ---- width
 ---- data
 function Model:bind()
-	for i = 1, #self.buffers do
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.buffers[i].id)
-		gl.glVertexAttribPointer(self.buffers[i].location, self.buffers[i].width, 
-			gl.GL_FLOAT, gl.GL_FALSE, 0, nil)
+	for k, v in pairs(self.buffers) do
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, v.id)
+		gl.glVertexAttribPointer(v.location, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, nil)
 	end
 end
 
 -- unbind buffers
 function Model:unbind()
-	for i = 1, #self.buffers do
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
-	end
+	gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
 end
 
 return Model

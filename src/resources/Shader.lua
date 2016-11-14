@@ -6,6 +6,9 @@ local SHADER_DIR = 'res/shaders/'
 local Shader = {}
 Shader.__index = Shader
 
+Shader.ATTRIB_POSITION = 0
+Shader.ATTRIB_COLOR = 1
+
 --- Create new Shader from shader file.
 -- @param filename Name of shader file
 -- @return Shader object
