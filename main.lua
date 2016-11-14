@@ -15,15 +15,10 @@ window:clearColor(0.2, 0.2, 0.2)
 
 Render.initialize()
 
-local tri = Model.new()
---[[
-tri:addBuffer(0, 1, 3, VALS.triangle.vertices)
-tri:addBuffer(1, 2, 3, VALS.triangle.colors)
---]]
---
+local model = Model.new()
 local triangle = Renderable.new()
 triangle.shader = Manager.get('shader/basic')
-triangle.model = tri
+triangle.model = model
 
 local alpha = 0.2
 local diff = 0.1
@@ -31,10 +26,7 @@ local diff = 0.1
 while window:shouldClose() == 0 do
 	window:clear()
 	window:update()
----[[
-	tri:addBuffer(0, 1, 3, VALS.triangle.vertices)
-	tri:addBuffer(1, 2, 3, VALS.triangle.colors)
---]]	
+
 	triangle:updateUniform('uAlpha', alpha)
 	Render.draw(triangle)
 

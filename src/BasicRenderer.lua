@@ -48,6 +48,9 @@ function BasicRenderer.draw(renderable)
 --	gl.glBindBuffer(gl.GL_ARRAY_BUFFER, BasicRenderer.BUFFER_POSITION)
 --	gl.glBufferData(gl.GL_ARRAY_BUFFER, #col * 4, cDataCol, gl.GL_STREAM_DRAW)
 
+	renderable.model:addBuffer(0, 1, 3, renderable.model.data.position)
+	renderable.model:addBuffer(1, 2, 3, renderable.model.data.color)
+
 	renderable.shader:start()
 	for k, v in pairs(renderable.uniforms) do
 		renderable.shader:setUniform(k, v)
