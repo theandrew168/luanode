@@ -38,13 +38,13 @@ end
 -- buffer
 -- unbind
 function Model:addBuffer(location, bufferID, width, data)
-	local buffer = {}
 
 --	local cBufferID = ffi.new('int[1]')
 --	gl.glGenBuffers(1, cBufferID)
 
 	-- Cache buffer details
 	if self.buffers[location] == nil then
+		local buffer = {}
 		print('creating buffer...')
 		buffer.id = bufferID
 		buffer.location = location
