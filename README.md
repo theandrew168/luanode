@@ -1,2 +1,2 @@
 # luanode
-Messing around with LuaJIT
+OpenGL graphics proof of concept with LuaJIT
