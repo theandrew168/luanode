@@ -40,5 +40,6 @@ while window:shouldClose() == 0 do
 	end
 end
 
+Render.terminate()
 Manager.unload('shader/basic')
 window:destroy()
